@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import org.example.webul.week9jpa.dto.movieRequest;
 
 @Entity
-@Table(name="movieJPA")
+@Table(name="moviejpa")
 public class movie{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
