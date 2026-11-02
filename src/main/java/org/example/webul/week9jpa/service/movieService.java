@@ -4,7 +4,9 @@ import org.example.webul.week9jpa.dto.movieRequest;
 import org.example.webul.week9jpa.dto.movieResponse;
 import org.example.webul.week9jpa.entity.movie;
 import org.example.webul.week9jpa.repository.movieRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +33,17 @@ public class movieService {
         return response;
     }
     public movieResponse findById(Long id) {
+        if (!repository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie not found: " + id);
+        }
         movie movie = repository.findById(id).get();
         return movieResponse.from(movie);
     }
 
     public movieResponse update(Long id, movieRequest request) {
+        if (!repository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie not found: " + id);
+        }
         movie m = repository.findById(id).get();
         m.update(request);
         movie updated = repository.save(m);
@@ -43,6 +51,9 @@ public class movieService {
     }
 
     public void delete(Long id) {
+        if (!repository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie not found: " + id);
+        }
         repository.deleteById(id);
     }
 
